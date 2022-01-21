@@ -11,7 +11,6 @@ use clap::Parser;
 #[clap(author, version, about, long_about = None)]
 struct Args {
     /// Name of the file to dump
-    #[clap(short, long)]
     filename: String,
 }
 
@@ -35,14 +34,19 @@ fn test_parquet(filename: impl AsRef<Path>) -> parquet::errors::Result<()> {
     let file_reader = SerializedFileReader::new(file)?;
     let mut arrow_reader = ParquetFileArrowReader::new(Arc::new(file_reader));
 
-    // TODO avoid buffering the entire thing
     let record_batch_reader = arrow_reader.get_record_reader(2048)?;
+
 
     let mut batches = vec![];
     for maybe_record_batch in record_batch_reader {
+        // avoid buffering the entire thing by dumping every 200K rows
+        if batches.len() > 100 {
+            println!("{}", pretty_format_batches(&batches)?);
+            batches.clear();
+        }
+
         batches.push(maybe_record_batch?);
     }
 
-    println!("{}", pretty_format_batches(&batches)?);
     Ok(())
 }
