@@ -47,6 +47,9 @@ fn test_parquet(filename: impl AsRef<Path>) -> parquet::errors::Result<()> {
 
         batches.push(maybe_record_batch?);
     }
+    if !batches.is_empty() {
+        println!("{}", pretty_format_batches(&batches)?);
+    }
 
     Ok(())
 }
