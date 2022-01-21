@@ -6,3 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = { version = "3.0", features = ["derive"]}
+ahash = "0.7"
+tokio = "1.8.2"
+arrow = { git = "https://github.com/apache/arrow-rs.git", rev="0377aaed5ff46214359d1b8d66c27f3afd9323c3", features=["prettyprint"] }
+parquet = { git = "https://github.com/apache/arrow-rs.git", rev="0377aaed5ff46214359d1b8d66c27f3afd9323c3" }
+# arrow = { path = "/Users/alamb/Software/arrow-rs/arrow", features=["prettyprint"] }
+# parquet = { path = "/Users/alamb/Software/arrow-rs/parquet" }
+#arrow = { version = "6.0" }
